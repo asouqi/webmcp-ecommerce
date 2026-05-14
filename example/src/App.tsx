@@ -1,14 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import {
   AppBar, Toolbar, Typography, Container, Grid, Card, CardContent,
-  CardMedia, Button, Badge, IconButton, Box, Drawer, List, ListItem,
-  ListItemText, TextField, Divider, Paper, Stack, Typography as MuiTypography
+  CardMedia, Button, Badge, IconButton, Box,
+  ListItemText, TextField, Divider, Paper, Stack,
 } from '@mui/material';
-import {
-  ShoppingCart as ShoppingCartIcon,
-  ArrowBack as ArrowBackIcon,
-  CheckCircle as SuccessIcon
-} from '@mui/icons-material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SuccessIcon from '@mui/icons-material/CheckCircle';
+
 import {CartItem, MOCK_PRODUCTS, Product} from "./store";
 import ProductCard from "./components/ProductCard";
 import ShoppingCart from "./components/ShoppingCart";
