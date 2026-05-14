@@ -8,8 +8,8 @@ pnpm-debug.log*
 
 lerna-debug.log*
 
-/node_modules/
-/example/node_modules/
+/node_modules/*
+/example/node_modules/*
 /dist
 /example/dist
 /dist-ssr
