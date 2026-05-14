@@ -1,47 +1,50 @@
-import React, { useState } from 'react';
 import { Box, Button, Rating, Stack, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
+
 import { Review } from '../store';
 
 interface ReviewFormProps {
-    productId: string
-    onSubmit: (review: Omit<Review, 'id' | 'date'>) => void
+  onSubmit: (review: Omit<Review, 'date' | 'id'>) => void;
+  productId: string;
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ productId, onSubmit }) => {
-    const [rating, setRating] = useState<number | null>(null);
-    const [comment, setComment] = useState('');
+const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, productId }) => {
+  const [rating, setRating] = useState<null | number>(null);
+  const [comment, setComment] = useState('');
 
-    const handleSubmit = () => {
-        if (!rating || !comment.trim()) return;
-        onSubmit({ productId, author: 'You', rating, comment, verified: true });
-        setRating(null);
-        setComment('');
-    };
+  const handleSubmit = () => {
+    if (!rating || !comment.trim()) return;
+    onSubmit({ author: 'You', comment, productId, rating, verified: true });
+    setRating(null);
+    setComment('');
+  };
 
-    return (
-        <Stack spacing={2}>
-            <Box>
-                <Typography variant="body2" mb={0.5}>Your Rating</Typography>
-                <Rating value={rating} onChange={(_, v) => setRating(v)} />
-            </Box>
-            <TextField
-                label="Your Review"
-                multiline
-                rows={3}
-                fullWidth
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-            />
-            <Button
-                variant="contained"
-                disabled={!rating || !comment.trim()}
-                onClick={handleSubmit}
-                sx={{ alignSelf: 'flex-start' }}
-            >
-                Submit Review
-            </Button>
-        </Stack>
-    );
+  return (
+    <Stack spacing={2}>
+      <Box>
+        <Typography mb={0.5} variant="body2">
+          Your Rating
+        </Typography>
+        <Rating onChange={(_, v) => setRating(v)} value={rating} />
+      </Box>
+      <TextField
+        fullWidth
+        label="Your Review"
+        multiline
+        onChange={(e) => setComment(e.target.value)}
+        rows={3}
+        value={comment}
+      />
+      <Button
+        disabled={!rating || !comment.trim()}
+        onClick={handleSubmit}
+        sx={{ alignSelf: 'flex-start' }}
+        variant="contained"
+      >
+        Submit Review
+      </Button>
+    </Stack>
+  );
 };
 
 export default ReviewForm;

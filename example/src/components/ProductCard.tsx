@@ -1,57 +1,93 @@
-import React from 'react';
-import { Box, Button, Card, CardContent, CardMedia, Chip, IconButton, Rating, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  IconButton,
+  Rating,
+  Typography,
+} from '@mui/material';
+import React from 'react';
+
 import { Product } from '../store';
 
 interface ProductCardProps {
-    product: Product
-    onAdd: (p: Product) => void
-    onViewDetail: (p: Product) => void
-    isWishlisted: boolean
-    onToggleWishlist: (id: string) => void
+  isWishlisted: boolean;
+  onAdd: (p: Product) => void;
+  onToggleWishlist: (id: string) => void;
+  onViewDetail: (p: Product) => void;
+  product: Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onViewDetail, isWishlisted, onToggleWishlist }) => (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-        <IconButton
-            sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'white', '&:hover': { bgcolor: 'white' } }}
-            onClick={() => onToggleWishlist(product.id)}
-        >
-            {isWishlisted ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-        </IconButton>
+const ProductCard: React.FC<ProductCardProps> = ({
+  isWishlisted,
+  onAdd,
+  onToggleWishlist,
+  onViewDetail,
+  product,
+}) => (
+  <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+    <IconButton
+      onClick={() => onToggleWishlist(product.id)}
+      sx={{
+        '&:hover': { bgcolor: 'white' },
+        bgcolor: 'white',
+        position: 'absolute',
+        right: 8,
+        top: 8,
+      }}
+    >
+      {isWishlisted ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+    </IconButton>
 
-        <CardMedia
-            component="img"
-            height="200"
-            image={product.image}
-            alt={product.name}
-            sx={{ objectFit: 'contain', bgcolor: '#f0f0f0', p: 2, cursor: 'pointer' }}
-            onClick={() => onViewDetail(product)}
+    <CardMedia
+      alt={product.name}
+      component="img"
+      height="200"
+      image={product.image}
+      onClick={() => onViewDetail(product)}
+      sx={{ bgcolor: '#f0f0f0', cursor: 'pointer', objectFit: 'contain', p: 2 }}
+    />
+
+    <CardContent sx={{ flexGrow: 1 }}>
+      <Typography color="text.secondary" variant="overline">
+        {product.category}
+      </Typography>
+      <Typography gutterBottom variant="h6">
+        {product.name}
+      </Typography>
+      <Rating precision={0.1} readOnly size="small" value={product.rating} />
+      <Typography color="text.secondary" sx={{ mb: 2, mt: 1 }} variant="body2">
+        {product.description}
+      </Typography>
+      <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+        <Typography color="primary" variant="h6">
+          ${product.price}
+        </Typography>
+        <Chip
+          color={product.stock > 0 ? 'success' : 'error'}
+          label={product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+          size="small"
+          variant="outlined"
         />
+      </Box>
+    </CardContent>
 
-        <CardContent sx={{ flexGrow: 1 }}>
-            <Typography variant="overline" color="text.secondary">{product.category}</Typography>
-            <Typography variant="h6" gutterBottom>{product.name}</Typography>
-            <Rating value={product.rating} precision={0.1} size="small" readOnly />
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 2 }}>{product.description}</Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" color="primary">${product.price}</Typography>
-                <Chip
-                    label={product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-                    color={product.stock > 0 ? 'success' : 'error'}
-                    size="small"
-                    variant="outlined"
-                />
-            </Box>
-        </CardContent>
-
-        <Box sx={{ p: 2, pt: 0 }}>
-            <Button variant="contained" fullWidth disabled={product.stock === 0} onClick={() => onAdd(product)}>
-                {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-            </Button>
-        </Box>
-    </Card>
+    <Box sx={{ p: 2, pt: 0 }}>
+      <Button
+        disabled={product.stock === 0}
+        fullWidth
+        onClick={() => onAdd(product)}
+        variant="contained"
+      >
+        {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+      </Button>
+    </Box>
+  </Card>
 );
 
 export default ProductCard;
